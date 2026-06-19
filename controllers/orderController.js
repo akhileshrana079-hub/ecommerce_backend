@@ -59,6 +59,11 @@ const createOrder = async(req,res)=>{
             success:true,
             order
         });
+        await sendEmail(
+        req.user.email,
+        "Order Placed",
+        `Your order has been placed successfully. Total Amount: ₹${totalPrice}`
+        );
 
     }
     catch(error){

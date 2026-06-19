@@ -1,6 +1,8 @@
 require('dotenv').config();
 const express = require('express');
 const app = express();
+const path = require('path');
+app.use('/uploads',express.static(path.join(__dirname,'uploads')));
 
 const connectDB = require('./config/db');
 connectDB();
@@ -18,6 +20,9 @@ app.use(cartRoutes);
 
 const orderRoutes =require('./routes/orderRoutes');
 app.use(orderRoutes);
+
+const paymentRoutes =require('./routes/paymentRoutes');
+app.use(paymentRoutes);
 
 
 app.listen(process.env.PORT, () => {

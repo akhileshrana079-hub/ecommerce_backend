@@ -4,6 +4,30 @@ const productSchema = new mongoose.Schema({
         type:String,
         required:true
     },
+    reviews:[
+        {
+            user:{
+                type:mongoose.Schema.Types.ObjectId,
+                ref:'user'
+            },
+            rating:{
+                type:Number,
+                required:true
+            },
+            comment:{
+                type:String,
+                required:true
+            }
+        }
+    ],
+    numReviews:{
+        type:Number,
+        default:0
+    },
+    averageRating:{
+        type:Number,
+        default:0
+    },
     description:{
         type:String,
         required:true
@@ -19,6 +43,9 @@ const productSchema = new mongoose.Schema({
     category:{
         type:String,
         required:true
+    },
+    image:{
+    type:String
     }
 },
 {

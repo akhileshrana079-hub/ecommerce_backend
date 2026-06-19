@@ -1,6 +1,7 @@
 const User = require('../models/User');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const sendEmail = require('../utils/sendEmail');
 
 const registerUser = async (req, res) => {
     try {
@@ -22,6 +23,11 @@ const registerUser = async (req, res) => {
             email,
             password
         });
+        await sendEmail(
+        user.email,
+        "Welcome",
+        "Welcome to our E-Commerce Store"
+        );
         user.password = undefined;
         res.status(201).json({
             success: true,

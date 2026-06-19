@@ -129,10 +129,79 @@ const deleteProduct = async (req, res) => {
     }
 };
 
+const addReview = async (req, res) => {
+
+    try {
+
+        const { rating, comment } = req.body;
+
+        const product = await Product.findById(
+            req.params.id
+        );
+
+        if (!product) {
+            return res.status(404).json({
+                success: false,
+                message: 'Product not found'
+            });
+        }
+
+        const review = {
+            user: req.user.id,
+            rating: Number(rating),
+            comment
+        };
+
+        product.reviews.push(review);
+
+        product.numReviews =
+            product.reviews.length;
+
+        product.averageRating =
+            product.reviews.reduce(
+                (acc, item) =>
+                    acc + item.rating,
+                0
+            ) / product.reviews.length;
+
+        await product.save();
+
+        res.status(201).json({
+            success: true,
+            product
+        });
+
+    } catch (error) {
+
+        res.status(500).json({
+            success: false,
+            message: error.message
+        });
+
+    }
+};
+
+const getReviews = async (req, res) => {
+
+    const product = await Product.findById(
+        req.params.id
+    ).populate(
+        'reviews.user',
+        'name'
+    );
+
+    res.status(200).json({
+        success: true,
+        reviews: product.reviews
+    });
+};
+
 module.exports = {
     createProduct,
     getAllProducts,
     getSingleProduct,
     updateProduct,
-    deleteProduct
+    deleteProduct,
+    addReview,
+    getReviews
 };
