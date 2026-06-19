@@ -24,7 +24,12 @@ app.use(orderRoutes);
 const paymentRoutes =require('./routes/paymentRoutes');
 app.use(paymentRoutes);
 
-
+app.get("/", (req, res) => {
+    res.json({
+        success: true,
+        message: "Ecommerce Backend API is running 🚀"
+    });
+});
 app.listen(process.env.PORT, () => {
     console.log(`Server running on port ${process.env.PORT}`);
 });
